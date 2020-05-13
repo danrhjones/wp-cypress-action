@@ -39896,7 +39896,7 @@ const installMaybe = () => {
 }
 
 const runWpCypress = () => {
-  const customCommand = core.getInput('yarn')
+  const customCommand = 'yarn'
   console.log('In runWpCypress')
   console.log('Using custom test command: %s', customCommand)
   return execCommand(customCommand, true, 'run wp-cypress start')
