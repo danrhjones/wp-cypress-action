@@ -115,8 +115,10 @@ const getNpmCache = () => {
   const hash = lockHash()
   if (!key) {
     if (useYarn()) {
+      console.log('using yarn')
       key = `yarn-${platformAndArch}-${hash}`
     } else {
+      console.log('using npm')
       key = `npm-${platformAndArch}-${hash}`
     }
   } else {
@@ -124,8 +126,10 @@ const getNpmCache = () => {
   }
 
   if (useYarn()) {
+    console.log('using yarn')
     o.inputPath = path.join(homeDirectory, '.cache', 'yarn')
   } else {
+    console.log('using npm')
     o.inputPath = NPM_CACHE_FOLDER
   }
 
@@ -247,34 +251,34 @@ const getInputBool = (name, defaultValue = false) => {
   return defaultValue
 }
 
-const buildAppMaybe = () => {
-  const buildApp = core.getInput('build')
-  if (!buildApp) {
-    return
-  }
+// const buildAppMaybe = () => {
+//   const buildApp = core.getInput('build')
+//   if (!buildApp) {
+//     return
+//   }
+//
+//   core.debug(`building application using "${buildApp}"`)
+//
+//   return execCommand(buildApp, true, 'build app')
+// }
 
-  core.debug(`building application using "${buildApp}"`)
-
-  return execCommand(buildApp, true, 'build app')
-}
-
-const startServerMaybe = () => {
-  let startCommand
-
-  if (isWindows()) {
-    // allow custom Windows start command
-    startCommand =
-        core.getInput('start-windows') || core.getInput('start')
-  } else {
-    startCommand = core.getInput('start')
-  }
-  if (!startCommand) {
-    core.debug('No start command found')
-    return
-  }
-
-  return execCommand(startCommand, false, 'start server')
-}
+// const startServerMaybe = () => {
+//   let startCommand
+//
+//   if (isWindows()) {
+//     // allow custom Windows start command
+//     startCommand =
+//         core.getInput('start-windows') || core.getInput('start')
+//   } else {
+//     startCommand = core.getInput('start')
+//   }
+//   if (!startCommand) {
+//     core.debug('No start command found')
+//     return
+//   }
+//
+//   return execCommand(startCommand, false, 'start server')
+// }
 
 const waitOnMaybe = () => {
   const waitOn = core.getInput('wait-on')
@@ -484,16 +488,16 @@ const installMaybe = () => {
 const runWpCypress = () => {
   const customCommand = 'yarn'
   console.log('In runWpCypress')
-  console.log('Using custom test command: %s', customCommand)
+  console.log('Using: ', customCommand)
   return execCommand(customCommand, true, 'run wp-cypress start')
 
 }
 
 installMaybe()
-.then(buildAppMaybe)
-.then(startServerMaybe)
-.then(waitOnMaybe)
+// .then(buildAppMaybe)
+// .then(startServerMaybe)
 .then(runWpCypress)
+.then(waitOnMaybe)
 .then(runTests)
 .then(() => {
   core.debug('all done, exiting')
