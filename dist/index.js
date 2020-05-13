@@ -39895,10 +39895,17 @@ const installMaybe = () => {
   })
 }
 
+const runWpCypress = () => {
+  return Promise.all().then(([npmCacheHit, cypressCacheHit]) => {
+    core.debug(`yarn run wp-cypress start`)
+  })
+}
+
 installMaybe()
 .then(buildAppMaybe)
 .then(startServerMaybe)
 .then(waitOnMaybe)
+.then(runWpCypress)
 .then(runTests)
 .then(() => {
   core.debug('all done, exiting')
