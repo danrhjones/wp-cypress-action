@@ -39615,6 +39615,7 @@ const install = () => {
   // npm paths with spaces like "C:\Program Files\nodejs\npm.cmd ci"
 
   if (useYarn()) {
+    console.log('using yarn')
     core.debug('installing NPM dependencies using Yarn')
     return io.which('yarn', true).then(yarnPath => {
       core.debug(`yarn at "${yarnPath}"`)
@@ -39625,6 +39626,7 @@ const install = () => {
       )
     })
   } else {
+    console.log('using npm')
     core.debug('installing NPM dependencies')
     core.exportVariable('npm_config_cache', NPM_CACHE_FOLDER)
 
@@ -39900,10 +39902,17 @@ const installMaybe = () => {
 }
 
 const runWpCypress = () => {
-  const customCommand = 'yarn'
   console.log('In runWpCypress')
-  console.log('Using: ', customCommand)
-  return execCommand(customCommand, true, 'run wp-cypress start')
+  // const customCommand = 'yarn'
+
+  // console.log('Using: ', customCommand)
+  // return execCommand(customCommand, true, 'run wp-cypress start')
+
+  return exec.exec(
+      quote(yarnPath),
+      ['run wp-cypress start'],
+      cypressCommandOptions
+  )
 
 }
 
