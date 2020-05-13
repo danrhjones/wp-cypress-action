@@ -39932,13 +39932,25 @@ const runWpCypress = () => {
 }
 
 
-installMaybe()
-// .then(buildAppMaybe)
-// .then(startServerMaybe)
-.then(runWpCypress)
-.then(waitOnMaybe)
-.then(runTests)
-.then(() => {
+const blah = () => {
+  if (useYarn()) {
+    console.log('using yarn')
+    core.debug('installing NPM dependencies using Yarn')
+    return io.which('yarn', true).then(yarnPath => {
+      core.debug(`yarn at "${yarnPath}"`)
+      return exec.exec(
+          quote(yarnPath),
+          ['--frozen-lockfile'],
+          cypressCommandOptions
+      )
+    })
+  }
+}
+
+blah()
+  .then(runWpCypress)
+  .then(runTests)
+  .then(() => {
   core.debug('all done, exiting')
   // force exit to avoid waiting for child processes,
   // like the server we have started
@@ -39950,6 +39962,25 @@ installMaybe()
   core.setFailed(error.message)
   process.exit(1)
 })
+
+// installMaybe()
+// // .then(buildAppMaybe)
+// // .then(startServerMaybe)
+// .then(runWpCypress)
+// .then(waitOnMaybe)
+// .then(runTests)
+// .then(() => {
+//   core.debug('all done, exiting')
+//   // force exit to avoid waiting for child processes,
+//   // like the server we have started
+//   // see https://github.com/actions/toolkit/issues/216
+//   process.exit(0)
+// })
+// .catch(error => {
+//   console.log(error)
+//   core.setFailed(error.message)
+//   process.exit(1)
+// })
 
 
 
