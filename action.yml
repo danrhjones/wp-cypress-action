@@ -1,13 +1,30 @@
 name: 'Hello World'
-description: 'Greet someone and record the time'
+description: 'GitHub Action for running Cypress end-to-end tests'
+author: 'Dan Jones'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  record:
+    description: 'Sends test results to Cypress Dashboard'
+    required: false
+    default: false
+  config:
+    description: 'Set configuration values. Separate multiple values with a comma. The values set here override any values set in your configuration file.'
+    required: false
+  config-file:
+    description: 'Path to a JSON file where configuration values are set.'
+    required: false
+    default: cypress.json
+  env:
+    description: 'Sets Cypress environment variables'
+    required: false
+  browser:
+    description: 'Name of the browser to use'
+    required: false
+  command:
+    description: 'Command that overrides cypress run'
+    required: false
+  path:
+    description: 'A file, directory or wildcard pattern that describes what to upload'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
 runs:
   using: 'node12'
   main: 'dist/index.js'
