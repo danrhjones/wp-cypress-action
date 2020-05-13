@@ -39897,10 +39897,10 @@ const installMaybe = () => {
 
 const runWpCypress = () => {
   const customCommand = core.getInput('yarn')
-  if (customCommand) {
-    console.log('Using custom test command: %s', customCommand)
-    return execCommand(customCommand, true, 'run wp-cypress start')
-  }
+  console.log('In runWpCypress')
+  console.log('Using custom test command: %s', customCommand)
+  return execCommand(customCommand, true, 'run wp-cypress start')
+
 }
 
 installMaybe()
