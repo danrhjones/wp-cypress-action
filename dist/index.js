@@ -39907,12 +39907,18 @@ const runWpCypress = () => {
 
   // console.log('Using: ', customCommand)
   // return execCommand(customCommand, true, 'run wp-cypress start')
+  if (useYarn()) {
+    console.log('using yarn')
+    return io.which('yarn', true).then(yarnPath => {
+      core.debug(`yarn at "${yarnPath}"`)
+      return exec.exec(
+          quote(yarnPath),
+          ['run wp-cypress start'],
+          cypressCommandOptions
+      )
+    })
+  }
 
-  return exec.exec(
-      quote(yarnPath),
-      ['run wp-cypress start'],
-      cypressCommandOptions
-  )
 
 }
 
