@@ -499,14 +499,24 @@ const runWpCypress = () => {
       core.debug(`yarn at "${yarnPath}"`)
       return exec.exec(
           quote(yarnPath),
+          ['list --depth=0'],
+          cypressCommandOptions
+      )
+    })
+  }
+  if (useYarn()) {
+    console.log('using yarn')
+    return io.which('yarn', true).then(yarnPath => {
+      core.debug(`yarn at "${yarnPath}"`)
+      return exec.exec(
+          quote(yarnPath),
           ['run wp-cypress start'],
           cypressCommandOptions
       )
     })
   }
-
-
 }
+
 
 installMaybe()
 // .then(buildAppMaybe)
