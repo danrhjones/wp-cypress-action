@@ -100,7 +100,10 @@ const packageLockFilename = path.join(
     'package-lock.json'
 )
 
-const useYarn = () => fs.existsSync(yarnFilename)
+const useYarn = () => {
+  console.log('using yarn')
+  fs.existsSync(yarnFilename)
+}
 
 const lockHash = () => {
   const lockFilename = useYarn() ? yarnFilename : packageLockFilename
@@ -304,6 +307,7 @@ const waitOnMaybe = () => {
 const I = x => x
 
 const runTests = async () => {
+  console.log('in the run tests bit')
   const runTests = getInputBool('runTests', true)
   if (!runTests) {
     console.log('Skipping running tests: runTests parameter is false')
@@ -493,19 +497,19 @@ const runWpCypress = () => {
 
   // console.log('Using: ', customCommand)
   // return execCommand(customCommand, true, 'run wp-cypress start')
-  if (useYarn()) {
-    console.log('using yarn')
-    return io.which('yarn', true).then(yarnPath => {
+
+    console.log('yarn list')
+     io.which('yarn', true).then(yarnPath => {
       core.debug(`yarn at "${yarnPath}"`)
-      return exec.exec(
+       exec.exec(
           quote(yarnPath),
           ['list --depth=0'],
           cypressCommandOptions
       )
     })
-  }
-  if (useYarn()) {
-    console.log('using yarn')
+
+
+    console.log('start cypress')
     return io.which('yarn', true).then(yarnPath => {
       core.debug(`yarn at "${yarnPath}"`)
       return exec.exec(
@@ -514,13 +518,12 @@ const runWpCypress = () => {
           cypressCommandOptions
       )
     })
-  }
 }
 
 
 const blah = () => {
   if (useYarn()) {
-    console.log('using yarn')
+    console.log('using yarn again')
     core.debug('installing NPM dependencies using Yarn')
     return io.which('yarn', true).then(yarnPath => {
       core.debug(`yarn at "${yarnPath}"`)
