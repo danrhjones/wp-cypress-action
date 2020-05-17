@@ -13,7 +13,7 @@ const blah = () => {
       return exec.exec(
           quote(yarnPath),
           ['--frozen-lockfile'],
-          cypressCommandOptions
+          // cypressCommandOptions
       )
     })
 }
