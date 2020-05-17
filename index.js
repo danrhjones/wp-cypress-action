@@ -533,12 +533,12 @@ const blah = () => {
           cypressCommandOptions
       )
     })
+
+
 }
 
-blah()
-  .then(runWpCypress)
-  .then(runTests)
-  .then(() => {
+blah().then(() => {
+  console.log('starting blah')
   core.debug('all done, exiting')
   // force exit to avoid waiting for child processes,
   // like the server we have started
@@ -550,6 +550,23 @@ blah()
   core.setFailed(error.message)
   process.exit(1)
 })
+
+//
+// blah()
+//   .then(runWpCypress)
+//   .then(runTests)
+//   .then(() => {
+//   core.debug('all done, exiting')
+//   // force exit to avoid waiting for child processes,
+//   // like the server we have started
+//   // see https://github.com/actions/toolkit/issues/216
+//   process.exit(0)
+// })
+// .catch(error => {
+//   console.log(error)
+//   core.setFailed(error.message)
+//   process.exit(1)
+// })
 
 // installMaybe()
 // // .then(buildAppMaybe)
