@@ -25,15 +25,7 @@ const runWpCypress = () => {
   // console.log('Using: ', customCommand)
   // return execCommand(customCommand, true, 'run wp-cypress start')
 
-    console.log('yarn list')
-     io.which('yarn', true).then(yarnPath => {
-      core.debug(`yarn at "${yarnPath}"`)
-       exec.exec(
-          quote(yarnPath),
-          ['list --depth=0'],
-          // cypressCommandOptions
-      )
-    })
+
 
     console.log('start cypress')
     return io.which('yarn', true).then(yarnPath => {
@@ -46,7 +38,28 @@ const runWpCypress = () => {
     })
 }
 
+const listPackages = () => {
+  console.log('In runWpCypress')
+  // const customCommand = 'yarn'
+
+  // console.log('Using: ', customCommand)
+  // return execCommand(customCommand, true, 'run wp-cypress start')
+
+  console.log('yarn list')
+  return io.which('yarn', true).then(yarnPath => {
+    core.debug(`yarn at "${yarnPath}"`)
+    return exec.exec(
+        quote(yarnPath),
+        ['list --depth=0'],
+        // cypressCommandOptions
+    )
+  })
+
+
+}
+
 blah()
+.then(listPackages)
 .then(runWpCypress)
 .then(() => {
   console.log('starting blah')
