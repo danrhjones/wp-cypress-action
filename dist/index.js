@@ -562,7 +562,37 @@ const blah = () => {
     })
 }
 
-blah().then(() => {
+const runWpCypress = () => {
+  console.log('In runWpCypress')
+  // const customCommand = 'yarn'
+
+  // console.log('Using: ', customCommand)
+  // return execCommand(customCommand, true, 'run wp-cypress start')
+
+    console.log('yarn list')
+     io.which('yarn', true).then(yarnPath => {
+      core.debug(`yarn at "${yarnPath}"`)
+       exec.exec(
+          quote(yarnPath),
+          ['list --depth=0'],
+          // cypressCommandOptions
+      )
+    })
+
+    console.log('start cypress')
+    return io.which('yarn', true).then(yarnPath => {
+      core.debug(`yarn at "${yarnPath}"`)
+      return exec.exec(
+          quote(yarnPath),
+          ['run wp-cypress start'],
+          // cypressCommandOptions
+      )
+    })
+}
+
+blah()
+.then(runWpCypress)
+.then(() => {
   console.log('starting blah')
   core.debug('all done, exiting')
   // force exit to avoid waiting for child processes,
