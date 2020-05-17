@@ -522,8 +522,8 @@ const runWpCypress = () => {
 
 
 const blah = () => {
-  if (useYarn()) {
-    console.log('using yarn again')
+
+    console.log('in blah')
     core.debug('installing NPM dependencies using Yarn')
     return io.which('yarn', true).then(yarnPath => {
       core.debug(`yarn at "${yarnPath}"`)
@@ -533,7 +533,6 @@ const blah = () => {
           cypressCommandOptions
       )
     })
-  }
 }
 
 blah()
