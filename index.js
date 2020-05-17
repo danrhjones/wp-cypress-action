@@ -43,7 +43,7 @@ const listPackages = () => {
 }
 
 blah()
-.then(listPackages)
+// .then(listPackages)
 .then(runWpCypress)
 .then(() => {
   console.log('starting blah')
