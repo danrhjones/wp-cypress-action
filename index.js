@@ -12,7 +12,7 @@ const installDependancies = () => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
         quote(yarnPath),
-        ['--frozen-lockfile'])
+        ['install --frozen-lockfile'])
   })
 }
 
