@@ -548,28 +548,28 @@ const exec = __webpack_require__(438)
 const io = __webpack_require__(934)
 const quote = __webpack_require__(658)
 
-const blah = () => {
+const installDependancies = () => {
 
-    console.log('in blah')
-    core.debug('installing NPM dependencies using Yarn')
-    return io.which('yarn', true).then(yarnPath => {
-      core.debug(`yarn at "${yarnPath}"`)
-      return exec.exec(
-          quote(yarnPath),
-          ['--frozen-lockfile'])
-    })
+  console.log('in installDependancies')
+  core.debug('installing NPM dependencies using Yarn')
+  return io.which('yarn', true).then(yarnPath => {
+    core.debug(`yarn at "${yarnPath}"`)
+    return exec.exec(
+        quote(yarnPath),
+        ['--frozen-lockfile'])
+  })
 }
 
 const runWpCypress = () => {
   console.log('In runWpCypress')
 
-    console.log('start cypress')
-    return io.which('yarn', true).then(yarnPath => {
-      return exec.exec(
-          quote(yarnPath),
-          ['run wp-cypress start']
-      )
-    })
+  console.log('start cypress')
+  return io.which('yarn', true).then(yarnPath => {
+    return exec.exec(
+        quote(yarnPath),
+        ['run wp-cypress start']
+    )
+  })
 }
 
 const listPackages = () => {
@@ -586,11 +586,24 @@ const listPackages = () => {
   })
 }
 
-blah()
+const runCypress = () => {
+  console.log('In runWpCypress')
+
+  console.log('yarn list')
+  return io.which('yarn', true).then(yarnPath => {
+    core.debug(`yarn at "${yarnPath}"`)
+    return exec.exec(
+        quote(yarnPath),
+        ['run test:e2e']
+    )
+  })
+}
+
+installDependancies()
+.then(runCypress)
 // .then(listPackages)
 .then(runWpCypress)
 .then(() => {
-  console.log('starting blah')
   core.debug('all done, exiting')
   // force exit to avoid waiting for child processes,
   // like the server we have started
