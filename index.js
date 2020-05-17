@@ -12,50 +12,34 @@ const blah = () => {
       core.debug(`yarn at "${yarnPath}"`)
       return exec.exec(
           quote(yarnPath),
-          ['--frozen-lockfile'],
-          // cypressCommandOptions
-      )
+          ['--frozen-lockfile'])
     })
 }
 
 const runWpCypress = () => {
   console.log('In runWpCypress')
-  // const customCommand = 'yarn'
-
-  // console.log('Using: ', customCommand)
-  // return execCommand(customCommand, true, 'run wp-cypress start')
-
-
 
     console.log('start cypress')
     return io.which('yarn', true).then(yarnPath => {
-      core.debug(`yarn at "${yarnPath}"`)
       return exec.exec(
           quote(yarnPath),
-          ['run wp-cypress start'],
-          // cypressCommandOptions
+          ['run wp-cypress start']
       )
     })
 }
 
 const listPackages = () => {
   console.log('In runWpCypress')
-  // const customCommand = 'yarn'
-
-  // console.log('Using: ', customCommand)
-  // return execCommand(customCommand, true, 'run wp-cypress start')
 
   console.log('yarn list')
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
+        core.debug(`running list "${yarnPath} list --depth=0"`),
         quote(yarnPath),
-        ['list --depth=0'],
-        // cypressCommandOptions
+        ['list --depth=0']
     )
   })
-
-
 }
 
 blah()
