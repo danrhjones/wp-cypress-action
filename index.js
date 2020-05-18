@@ -31,7 +31,7 @@ const runWpCypress = () => {
 }
 
 const listPackages = () => {
-  console.log('In runWpCypress')
+  console.log('In list packages')
 
   console.log('yarn list')
   return io.which('yarn', true).then(yarnPath => {
@@ -43,8 +43,8 @@ const listPackages = () => {
   })
 }
 
-const runCypress = () => {
-  console.log('In runWpCypress')
+const runTests = () => {
+  console.log('In run tests')
 
   console.log('yarn list')
   return io.which('yarn', true).then(yarnPath => {
@@ -57,9 +57,9 @@ const runCypress = () => {
 }
 
 installDependancies()
-.then(runCypress)
-// .then(listPackages)
+.then(listPackages)
 .then(runWpCypress)
+.then(runTests)
 .then(() => {
   core.debug('all done, exiting')
   // force exit to avoid waiting for child processes,
