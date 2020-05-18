@@ -549,8 +549,6 @@ const io = __webpack_require__(934)
 const quote = __webpack_require__(658)
 
 const installDependancies = () => {
-
-  console.log('in installDependancies')
   core.debug('installing NPM dependencies using Yarn')
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
@@ -558,14 +556,10 @@ const installDependancies = () => {
         `"${yarnPath}" install --frozen-lockfile`,
         [])
   })
-
-  // exec.exec(`"${npxPath}" percy exec ${flags} -- ${testCommand}`, [], execOptions);
 }
 
 const runWpCypress = () => {
-  console.log('In runWpCypress')
-
-  console.log('start cypress')
+  core.debug('Create WP-Cypress docker container')
   return io.which('yarn', true).then(yarnPath => {
     return exec.exec(
         `"${yarnPath}" run wp-cypress start`,
@@ -574,34 +568,34 @@ const runWpCypress = () => {
   })
 }
 
-const listPackages = () => {
-  console.log('In list packages')
-
-  console.log('yarn list')
-  return io.which('yarn', true).then(yarnPath => {
-    core.debug(`yarn at "${yarnPath}"`)
-    return exec.exec(
-        `"${yarnPath}" list --depth=0`,
-        []
-    )
-  })
-}
-
 const runTests = () => {
-  console.log('In run tests')
+  const commandPrefix = core.getInput('command-prefix')
+  let cmd = []
 
-  console.log('yarn list')
+  // we need to split the command prefix into individual arguments
+  if (commandPrefix) {
+    // otherwise they are passed all as a single string
+    const parts = commandPrefix.split(' ')
+    cmd = cmd.concat(parts)
+    core.debug(`with concatenated command prefix: ${cmd.join(' ')}`)
+  }
+  const script = core.getInput('command')
+
+  if (script) {
+    cmd.push(script)
+  }
+
+  core.debug('runs cypress tests')
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
-        `"${yarnPath}" run test:e2e`,
-        []
+        `"${yarnPath}"`,
+        cmd
     )
   })
 }
 
 installDependancies()
-.then(listPackages)
 .then(runWpCypress)
 .then(runTests)
 .then(() => {
