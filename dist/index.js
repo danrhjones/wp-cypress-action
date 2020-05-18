@@ -3521,6 +3521,9 @@ function findFilesToUpload(searchPath, globOptions) {
 
 
 
+const cmd = Object(lib_core.getInput)(Inputs.command,{required: true})
+const index_name = Object(lib_core.getInput)(Inputs.Name, {required: false})
+const path = Object(lib_core.getInput)(Inputs.Path, {required: true})
 
 const installDependancies = () => {
   Object(lib_core.debug)('installing NPM dependencies using Yarn')
@@ -3543,21 +3546,6 @@ const runWpCypress = () => {
 }
 
 const runTests = () => {
-  const commandPrefix = Object(lib_core.getInput)('command-prefix')
-  let cmd = []
-
-  // we need to split the command prefix into individual arguments
-  if (commandPrefix) {
-    // otherwise they are passed all as a single string
-    const parts = commandPrefix.split(' ')
-    cmd = cmd.concat(parts)
-    Object(lib_core.debug)(`with concatenated command prefix: ${cmd.join(' ')}`)
-  }
-  const script = Object(lib_core.getInput)('command')
-
-  if (script) {
-    cmd.push(script)
-  }
 
   Object(lib_core.debug)('runs cypress tests')
   return Object(io.which)('yarn', true).then(yarnPath => {
@@ -3571,8 +3559,6 @@ const runTests = () => {
 
 const uploadArtifacts = async () => {
   try {
-    const name = Object(lib_core.getInput)(Inputs.Name, {required: false})
-    const path = Object(lib_core.getInput)(Inputs.Path, {required: true})
 
     const searchResult = await findFilesToUpload(path)
     if (searchResult.filesToUpload.length === 0) {
@@ -3590,7 +3576,7 @@ const uploadArtifacts = async () => {
         continueOnError: true
       }
       await artifactClient.uploadArtifact(
-          name || getDefaultArtifactName(),
+          index_name || getDefaultArtifactName(),
           searchResult.filesToUpload,
           searchResult.rootDirectory,
           options

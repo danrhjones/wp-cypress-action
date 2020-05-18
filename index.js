@@ -6,6 +6,9 @@ import {create, UploadOptions} from '@actions/artifact'
 import {Inputs, getDefaultArtifactName} from './constants'
 import {findFilesToUpload} from './search'
 
+const cmd = getInput(Inputs.command,{required: true})
+const name = getInput(Inputs.Name, {required: false})
+const path = getInput(Inputs.Path, {required: true})
 
 const installDependancies = () => {
   debug('installing NPM dependencies using Yarn')
@@ -28,21 +31,6 @@ const runWpCypress = () => {
 }
 
 const runTests = () => {
-  const commandPrefix = getInput('command-prefix')
-  let cmd = []
-
-  // we need to split the command prefix into individual arguments
-  if (commandPrefix) {
-    // otherwise they are passed all as a single string
-    const parts = commandPrefix.split(' ')
-    cmd = cmd.concat(parts)
-    debug(`with concatenated command prefix: ${cmd.join(' ')}`)
-  }
-  const script = getInput('command')
-
-  if (script) {
-    cmd.push(script)
-  }
 
   debug('runs cypress tests')
   return which('yarn', true).then(yarnPath => {
@@ -56,8 +44,6 @@ const runTests = () => {
 
 const uploadArtifacts = async () => {
   try {
-    const name = getInput(Inputs.Name, {required: false})
-    const path = getInput(Inputs.Path, {required: true})
 
     const searchResult = await findFilesToUpload(path)
     if (searchResult.filesToUpload.length === 0) {
