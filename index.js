@@ -6,10 +6,6 @@ import {create, UploadOptions} from '@actions/artifact'
 import {Inputs, getDefaultArtifactName} from './constants'
 import {findFilesToUpload} from './search'
 
-let cmd = ''
-let name = ''
-let path = ''
-
 const installDependancies = () => {
   debug('installing NPM dependencies using Yarn')
   return which('yarn', true).then(yarnPath => {
@@ -32,9 +28,7 @@ const runWpCypress = () => {
 
 const runTests = () => {
 
-  cmd = getInput(Inputs.command, {required: true})
-  name = getInput(Inputs.Name, {required: false})
-  path = getInput(Inputs.Path, {required: true})
+  const cmd = getInput(Inputs.command, {required: true})
 
   debug('runs cypress tests')
   return which('yarn', true).then(yarnPath => {
@@ -47,6 +41,9 @@ const runTests = () => {
 }
 
 const uploadArtifacts = async () => {
+  const name = getInput(Inputs.Name, {required: false})
+  const path = getInput(Inputs.Path, {required: true})
+
   try {
 
     const searchResult = await findFilesToUpload(path)
@@ -81,7 +78,7 @@ const uploadArtifacts = async () => {
 installDependancies()
 .then(runWpCypress)
 .then(runTests)
-.then(uploadArtifacts)
+// .then(uploadArtifacts)
 .then(() => {
   debug('all done, exiting')
   // force exit to avoid waiting for child processes,

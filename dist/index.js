@@ -9063,10 +9063,6 @@ function findFilesToUpload(searchPath, globOptions) {
 
 
 
-let cmd = ''
-let index_name = ''
-let path = ''
-
 const installDependancies = () => {
   Object(lib_core.debug)('installing NPM dependencies using Yarn')
   return Object(io.which)('yarn', true).then(yarnPath => {
@@ -9089,9 +9085,7 @@ const runWpCypress = () => {
 
 const runTests = () => {
 
-  cmd = Object(lib_core.getInput)(Inputs.command, {required: true})
-  index_name = Object(lib_core.getInput)(Inputs.Name, {required: false})
-  path = Object(lib_core.getInput)(Inputs.Path, {required: true})
+  const cmd = Object(lib_core.getInput)(Inputs.command, {required: true})
 
   Object(lib_core.debug)('runs cypress tests')
   return Object(io.which)('yarn', true).then(yarnPath => {
@@ -9104,6 +9098,9 @@ const runTests = () => {
 }
 
 const uploadArtifacts = async () => {
+  const name = Object(lib_core.getInput)(Inputs.Name, {required: false})
+  const path = Object(lib_core.getInput)(Inputs.Path, {required: true})
+
   try {
 
     const searchResult = await findFilesToUpload(path)
@@ -9122,7 +9119,7 @@ const uploadArtifacts = async () => {
         continueOnError: true
       }
       await artifactClient.uploadArtifact(
-          index_name || getDefaultArtifactName(),
+          name || getDefaultArtifactName(),
           searchResult.filesToUpload,
           searchResult.rootDirectory,
           options
@@ -9138,7 +9135,7 @@ const uploadArtifacts = async () => {
 installDependancies()
 .then(runWpCypress)
 .then(runTests)
-.then(uploadArtifacts)
+// .then(uploadArtifacts)
 .then(() => {
   Object(lib_core.debug)('all done, exiting')
   // force exit to avoid waiting for child processes,
