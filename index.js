@@ -11,9 +11,11 @@ const installDependancies = () => {
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
-        quote(yarnPath),
-        ['install --frozen-lockfile'])
+        `"${yarnPath}" install --frozen-lockfile`,
+        [])
   })
+
+  // exec.exec(`"${npxPath}" percy exec ${flags} -- ${testCommand}`, [], execOptions);
 }
 
 const runWpCypress = () => {
@@ -22,8 +24,8 @@ const runWpCypress = () => {
   console.log('start cypress')
   return io.which('yarn', true).then(yarnPath => {
     return exec.exec(
-        quote(yarnPath),
-        ['run wp-cypress start']
+        `"${yarnPath}" run wp-cypress start`,
+        []
     )
   })
 }
@@ -35,9 +37,8 @@ const listPackages = () => {
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
-        core.debug(`running list "${yarnPath} list --depth=0"`),
-        quote(yarnPath),
-        ['list --depth=0']
+        `"${yarnPath}" list --depth=0`,
+        []
     )
   })
 }
@@ -49,8 +50,8 @@ const runCypress = () => {
   return io.which('yarn', true).then(yarnPath => {
     core.debug(`yarn at "${yarnPath}"`)
     return exec.exec(
-        quote(yarnPath),
-        ['run test:e2e']
+        `"${yarnPath}" run test:e2e`,
+        []
     )
   })
 }
