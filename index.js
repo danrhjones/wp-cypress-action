@@ -6,9 +6,9 @@ import {create, UploadOptions} from '@actions/artifact'
 import {Inputs, getDefaultArtifactName} from './constants'
 import {findFilesToUpload} from './search'
 
-const cmd = getInput(Inputs.command,{required: true})
-const name = getInput(Inputs.Name, {required: false})
-const path = getInput(Inputs.Path, {required: true})
+let cmd = ''
+let name = ''
+let path = ''
 
 const installDependancies = () => {
   debug('installing NPM dependencies using Yarn')
@@ -31,6 +31,10 @@ const runWpCypress = () => {
 }
 
 const runTests = () => {
+
+  cmd = getInput(Inputs.command, {required: true})
+  name = getInput(Inputs.Name, {required: false})
+  path = getInput(Inputs.Path, {required: true})
 
   debug('runs cypress tests')
   return which('yarn', true).then(yarnPath => {

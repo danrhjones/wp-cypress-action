@@ -9063,9 +9063,9 @@ function findFilesToUpload(searchPath, globOptions) {
 
 
 
-const cmd = Object(lib_core.getInput)(Inputs.command,{required: true})
-const index_name = Object(lib_core.getInput)(Inputs.Name, {required: false})
-const path = Object(lib_core.getInput)(Inputs.Path, {required: true})
+let cmd = ''
+let index_name = ''
+let path = ''
 
 const installDependancies = () => {
   Object(lib_core.debug)('installing NPM dependencies using Yarn')
@@ -9088,6 +9088,10 @@ const runWpCypress = () => {
 }
 
 const runTests = () => {
+
+  cmd = Object(lib_core.getInput)(Inputs.command, {required: true})
+  index_name = Object(lib_core.getInput)(Inputs.Name, {required: false})
+  path = Object(lib_core.getInput)(Inputs.Path, {required: true})
 
   Object(lib_core.debug)('runs cypress tests')
   return Object(io.which)('yarn', true).then(yarnPath => {
