@@ -19,6 +19,7 @@ const got = require('got')
 const quote = require('quote')
 const cliParser = require('argument-vector')()
 const path = require('path')
+const fs = require('fs')
 
 // const installDependancies = () => {
 //   debug('installing NPM dependencies using Yarn')

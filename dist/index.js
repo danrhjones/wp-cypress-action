@@ -40140,6 +40140,7 @@ const got = __webpack_require__(217)
 const quote = __webpack_require__(658)
 const cliParser = __webpack_require__(875)()
 const path = __webpack_require__(622)
+const fs = __webpack_require__(747)
 
 // const installDependancies = () => {
 //   debug('installing NPM dependencies using Yarn')
