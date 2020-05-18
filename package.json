@@ -12,6 +12,7 @@
   "dependencies": {
     "@actions/core": "1.2.4",
     "@actions/exec": "1.0.1",
+    "@actions/glob": "^0.1.0",
     "@actions/io": "1.0.1",
     "@octokit/rest": "16.43.1",
     "argument-vector": "1.0.2",
