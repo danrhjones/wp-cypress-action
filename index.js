@@ -2,7 +2,6 @@
 import {exec} from '@actions/exec'
 import {which} from '@actions/io'
 import {debug, getInput, setFailed} from "@actions/core";
-import {Inputs} from './constants'
 
 
 const installDependancies = () => {
@@ -26,23 +25,23 @@ const runWpCypress = () => {
 }
 
 const runTests = () => {
-  // const commandPrefix = getInput('command-prefix')
-  // let cmd = []
-  //
-  // // we need to split the command prefix into individual arguments
-  // if (commandPrefix) {
-  //   // otherwise they are passed all as a single string
-  //   const parts = commandPrefix.split(' ')
-  //   cmd = cmd.concat(parts)
-  //   debug(`with concatenated command prefix: ${cmd.join(' ')}`)
-  // }
-  // const script = getInput('command')
-  //
-  // if (script) {
-  //   cmd.push(script)
-  // }
+  const commandPrefix = getInput('command-prefix')
+  let cmd = []
 
-  const cmd = getInput(Inputs.Command)
+  // we need to split the command prefix into individual arguments
+  if (commandPrefix) {
+    // otherwise they are passed all as a single string
+    const parts = commandPrefix.split(' ')
+    cmd = cmd.concat(parts)
+    debug(`with concatenated command prefix: ${cmd.join(' ')}`)
+  }
+  const script = getInput('command')
+
+  if (script) {
+    cmd.push(script)
+  }
+
+  // const cmd = getInput(Inputs.Command)
 
   debug('runs cypress tests')
   return which('yarn', true).then(yarnPath => {

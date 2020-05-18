@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(717);
+/******/ 		return __webpack_require__(566);
 /******/ 	};
 /******/ 	// initialize runtime
 /******/ 	runtime(__webpack_require__);
@@ -541,6 +541,92 @@ function isUnixExecutable(stats) {
 
 /***/ }),
 
+/***/ 566:
+/***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(438);
+/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_exec__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(934);
+/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_io__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(76);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_2__);
+// @ts-check
+
+
+
+
+
+const installDependancies = () => {
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('installing NPM dependencies using Yarn')
+  return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`yarn at "${yarnPath}"`)
+    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+        `"${yarnPath}" install --frozen-lockfile`,
+        [])
+  })
+}
+
+const runWpCypress = () => {
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('Create WP-Cypress docker container')
+  return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
+    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+        `"${yarnPath}" run wp-cypress start`,
+        []
+    )
+  })
+}
+
+const runTests = () => {
+  const commandPrefix = Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.getInput)('command-prefix')
+  let cmd = []
+
+  // we need to split the command prefix into individual arguments
+  if (commandPrefix) {
+    // otherwise they are passed all as a single string
+    const parts = commandPrefix.split(' ')
+    cmd = cmd.concat(parts)
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`with concatenated command prefix: ${cmd.join(' ')}`)
+  }
+  const script = Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.getInput)('command')
+
+  if (script) {
+    cmd.push(script)
+  }
+
+  // const cmd = getInput(Inputs.Command)
+
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('runs cypress tests')
+  return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
+    Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`yarn at "${yarnPath}"`)
+    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+        `"${yarnPath}"`,
+        cmd
+    )
+  })
+}
+
+
+installDependancies()
+.then(runWpCypress)
+.then(runTests)
+.then(() => {
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('all done, exiting')
+  // force exit to avoid waiting for child processes,
+  // like the server we have started
+  // see https://github.com/actions/toolkit/issues/216
+  process.exit(0)
+})
+.catch(error => {
+  console.log(error)
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.setFailed)(error.message)
+  process.exit(1)
+})
+
+
+/***/ }),
+
 /***/ 614:
 /***/ (function(module) {
 
@@ -559,109 +645,6 @@ module.exports = require("path");
 /***/ (function(module) {
 
 module.exports = require("util");
-
-/***/ }),
-
-/***/ 717:
-/***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var exec = __webpack_require__(438);
-
-// EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
-var io = __webpack_require__(934);
-
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __webpack_require__(76);
-
-// CONCATENATED MODULE: ./constants.ts
-var Inputs;
-(function (Inputs) {
-    Inputs["Name"] = "name";
-    Inputs["Path"] = "path";
-    Inputs["Command"] = "command";
-})(Inputs || (Inputs = {}));
-function getDefaultArtifactName() {
-    return 'artifact';
-}
-
-// CONCATENATED MODULE: ./index.js
-// @ts-check
-
-
-
-
-
-
-const installDependancies = () => {
-  Object(core.debug)('installing NPM dependencies using Yarn')
-  return Object(io.which)('yarn', true).then(yarnPath => {
-    Object(core.debug)(`yarn at "${yarnPath}"`)
-    return Object(exec.exec.exec)(
-        `"${yarnPath}" install --frozen-lockfile`,
-        [])
-  })
-}
-
-const runWpCypress = () => {
-  Object(core.debug)('Create WP-Cypress docker container')
-  return Object(io.which)('yarn', true).then(yarnPath => {
-    return Object(exec.exec.exec)(
-        `"${yarnPath}" run wp-cypress start`,
-        []
-    )
-  })
-}
-
-const runTests = () => {
-  // const commandPrefix = getInput('command-prefix')
-  // let cmd = []
-  //
-  // // we need to split the command prefix into individual arguments
-  // if (commandPrefix) {
-  //   // otherwise they are passed all as a single string
-  //   const parts = commandPrefix.split(' ')
-  //   cmd = cmd.concat(parts)
-  //   debug(`with concatenated command prefix: ${cmd.join(' ')}`)
-  // }
-  // const script = getInput('command')
-  //
-  // if (script) {
-  //   cmd.push(script)
-  // }
-
-  const cmd = Object(core.getInput)(Inputs.Command)
-
-  Object(core.debug)('runs cypress tests')
-  return Object(io.which)('yarn', true).then(yarnPath => {
-    Object(core.debug)(`yarn at "${yarnPath}"`)
-    return Object(exec.exec.exec)(
-        `"${yarnPath}"`,
-        cmd
-    )
-  })
-}
-
-
-installDependancies()
-.then(runWpCypress)
-.then(runTests)
-.then(() => {
-  Object(core.debug)('all done, exiting')
-  // force exit to avoid waiting for child processes,
-  // like the server we have started
-  // see https://github.com/actions/toolkit/issues/216
-  process.exit(0)
-})
-.catch(error => {
-  console.log(error)
-  Object(core.setFailed)(error.message)
-  process.exit(1)
-})
-
 
 /***/ }),
 
@@ -1664,36 +1647,6 @@ function copyFile(srcFile, destFile, force) {
 /******/ 		};
 /******/ 	}();
 /******/ 	
-/******/ 	/* webpack/runtime/define property getter */
-/******/ 	!function() {
-/******/ 		// define getter function for harmony exports
-/******/ 		var hasOwnProperty = Object.prototype.hasOwnProperty;
-/******/ 		__webpack_require__.d = function(exports, name, getter) {
-/******/ 			if(!hasOwnProperty.call(exports, name)) {
-/******/ 				Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/create fake namespace object */
-/******/ 	!function() {
-/******/ 		// create a fake namespace object
-/******/ 		// mode & 1: value is a module id, require it
-/******/ 		// mode & 2: merge all properties of value into the ns
-/******/ 		// mode & 4: return value when already ns object
-/******/ 		// mode & 8|1: behave like require
-/******/ 		__webpack_require__.t = function(value, mode) {
-/******/ 			if(mode & 1) value = this(value);
-/******/ 			if(mode & 8) return value;
-/******/ 			if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 			var ns = Object.create(null);
-/******/ 			__webpack_require__.r(ns);
-/******/ 			Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 			if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 			return ns;
-/******/ 		};
-/******/ 	}();
-/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -1703,6 +1656,17 @@ function copyFile(srcFile, destFile, force) {
 /******/ 				function getModuleExports() { return module; };
 /******/ 			__webpack_require__.d(getter, 'a', getter);
 /******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getter */
+/******/ 	!function() {
+/******/ 		// define getter function for harmony exports
+/******/ 		var hasOwnProperty = Object.prototype.hasOwnProperty;
+/******/ 		__webpack_require__.d = function(exports, name, getter) {
+/******/ 			if(!hasOwnProperty.call(exports, name)) {
+/******/ 				Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			}
 /******/ 		};
 /******/ 	}();
 /******/ 	
