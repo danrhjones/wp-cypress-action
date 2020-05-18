@@ -8,7 +8,7 @@ const installDependancies = () => {
   debug('installing NPM dependencies using Yarn')
   return which('yarn', true).then(yarnPath => {
     debug(`yarn at "${yarnPath}"`)
-    return exec.exec(
+    return exec(
         `"${yarnPath}" install --frozen-lockfile`,
         [])
   })
@@ -17,7 +17,7 @@ const installDependancies = () => {
 const runWpCypress = () => {
   debug('Create WP-Cypress docker container')
   return which('yarn', true).then(yarnPath => {
-    return exec.exec(
+    return exec(
         `"${yarnPath}" run wp-cypress start`,
         []
     )
@@ -46,7 +46,7 @@ const runTests = () => {
   debug('runs cypress tests')
   return which('yarn', true).then(yarnPath => {
     debug(`yarn at "${yarnPath}"`)
-    return exec.exec(
+    return exec(
         `"${yarnPath}"`,
         cmd
     )

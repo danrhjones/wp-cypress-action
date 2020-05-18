@@ -562,7 +562,7 @@ const installDependancies = () => {
   Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('installing NPM dependencies using Yarn')
   return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
     Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`yarn at "${yarnPath}"`)
-    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+    return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
         `"${yarnPath}" install --frozen-lockfile`,
         [])
   })
@@ -571,7 +571,7 @@ const installDependancies = () => {
 const runWpCypress = () => {
   Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('Create WP-Cypress docker container')
   return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
-    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+    return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
         `"${yarnPath}" run wp-cypress start`,
         []
     )
@@ -600,7 +600,7 @@ const runTests = () => {
   Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('runs cypress tests')
   return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
     Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`yarn at "${yarnPath}"`)
-    return _actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec.exec(
+    return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
         `"${yarnPath}"`,
         cmd
     )
