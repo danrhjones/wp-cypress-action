@@ -3606,6 +3606,7 @@ const uploadArtifacts = async () => {
 installDependancies()
 .then(runWpCypress)
 .then(runTests)
+.then(uploadArtifacts)
 .then(() => {
   Object(lib_core.debug)('all done, exiting')
   // force exit to avoid waiting for child processes,
