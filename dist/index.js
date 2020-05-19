@@ -35555,7 +35555,7 @@ const index_runTests = async () => {
   const npxPath = await Object(io.which)('npx', true)
   Object(core.debug)(`npx path: ${npxPath}`)
 
-  return Object(exec.exec)(quote(npxPath), cmd, opts)
+   Object(exec.exec)(quote(npxPath), cmd, opts)
 }
 
 const installMaybe = () => {

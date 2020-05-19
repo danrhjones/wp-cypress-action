@@ -509,7 +509,7 @@ const runTests = async () => {
   const npxPath = await which('npx', true)
   debug(`npx path: ${npxPath}`)
 
-  return exec(quote(npxPath), cmd, opts)
+   exec(quote(npxPath), cmd, opts)
 }
 
 const installMaybe = () => {
