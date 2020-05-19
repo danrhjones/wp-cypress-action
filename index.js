@@ -11,39 +11,12 @@ import * as os from "os";
 import {restoreCache, saveCache} from 'cache/lib';
 import {Octokit} from "@octokit/rest";
 import hasha from "hasha";
-
-const {Inputs} = require("cache/lib/constants");
 const findYarnWorkspaceRoot = require('find-yarn-workspace-root')
-const got = require('got')
 const quote = require('quote')
-const cliParser = require('argument-vector')()
+const cliParser = require('argument-vector')
 const path = require('path')
 const fs = require('fs')
 
-/**
- * A small utility for checking when an URL responds, kind of
- * a poor man's https://www.npmjs.com/package/wait-on
- */
-const ping = (url, timeout) => {
-  const start = +new Date()
-  return got(url, {
-    retry: {
-      retries(retry, error) {
-        const now = +new Date()
-        debug(
-            `${now - start}ms ${error.method} ${error.host} ${
-                error.code
-            }`
-        )
-        if (now - start > timeout) {
-          console.error('%s timed out', url)
-          return 0
-        }
-        return 1000
-      }
-    }
-  })
-}
 
 /**
  * Parses input command, finds the tool and
@@ -254,53 +227,7 @@ const getInputBool = (name, defaultValue = false) => {
   return defaultValue
 }
 
-const buildAppMaybe = () => {
-  const buildApp = getInput('build')
-  if (!buildApp) {
-    return
-  }
 
-  debug(`building application using "${buildApp}"`)
-
-  return execCommand(buildApp, true, 'build app')
-}
-
-const startServerMaybe = () => {
-  let startCommand
-
-  if (isWindows()) {
-    // allow custom Windows start command
-    startCommand =
-        getInput('start-windows') || getInput('start')
-  } else {
-    startCommand = getInput('start')
-  }
-  if (!startCommand) {
-    debug('No start command found')
-    return
-  }
-
-  return execCommand(startCommand, false, 'start server')
-}
-
-const waitOnMaybe = () => {
-  const waitOn = getInput('wait-on')
-  if (!waitOn) {
-    return
-  }
-
-  const waitOnTimeout = getInput('wait-on-timeout') || '60'
-
-  console.log(
-      'waiting on "%s" with timeout of %s seconds',
-      waitOn,
-      waitOnTimeout
-  )
-
-  const waitTimeoutMs = parseFloat(waitOnTimeout) * 1000
-
-  return ping(waitOn, waitTimeoutMs)
-}
 
 const I = x => x
 
