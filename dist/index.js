@@ -40134,6 +40134,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const {Inputs} = __webpack_require__(968);
 const findYarnWorkspaceRoot = __webpack_require__(64)
 const got = __webpack_require__(217)
@@ -40141,7 +40142,6 @@ const quote = __webpack_require__(658)
 const cliParser = __webpack_require__(875)()
 const path = __webpack_require__(622)
 const fs = __webpack_require__(747)
-
 
 /**
  * A small utility for checking when an URL responds, kind of
@@ -40613,21 +40613,13 @@ const installMaybe = () => {
 
 const runWpCypress = () => {
   Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('Create WP-Cypress docker container')
-  if (useYarn()) {
-    return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
-      return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
-          `"${yarnPath}" run wp-cypress start`,
-          []
-      )
-    })
-  } else {
-    return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('npm', true).then(npmPath => {
-      Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`npm at "${npmPath}"`)
-      return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(`${npmPath}" run wp-cypress start`, [])
-    })
-  }
+  return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
+    return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
+        `"${yarnPath}" run wp-cypress start`,
+        []
+    )
+  })
 }
-
 
 installMaybe()
 .then(runWpCypress)

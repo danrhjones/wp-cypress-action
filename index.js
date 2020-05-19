@@ -11,6 +11,7 @@ import * as os from "os";
 import {restoreCache, saveCache} from 'cache/lib';
 import {Octokit} from "@octokit/rest";
 import hasha from "hasha";
+
 const {Inputs} = require("cache/lib/constants");
 const findYarnWorkspaceRoot = require('find-yarn-workspace-root')
 const got = require('got')
@@ -18,7 +19,6 @@ const quote = require('quote')
 const cliParser = require('argument-vector')()
 const path = require('path')
 const fs = require('fs')
-
 
 /**
  * A small utility for checking when an URL responds, kind of
@@ -490,21 +490,13 @@ const installMaybe = () => {
 
 const runWpCypress = () => {
   debug('Create WP-Cypress docker container')
-  if (useYarn()) {
-    return which('yarn', true).then(yarnPath => {
-      return exec(
-          `"${yarnPath}" run wp-cypress start`,
-          []
-      )
-    })
-  } else {
-    return which('npm', true).then(npmPath => {
-      debug(`npm at "${npmPath}"`)
-      return exec(`${npmPath}" run wp-cypress start`, [])
-    })
-  }
+  return which('yarn', true).then(yarnPath => {
+    return exec(
+        `"${yarnPath}" run wp-cypress start`,
+        []
+    )
+  })
 }
-
 
 installMaybe()
 .then(runWpCypress)
