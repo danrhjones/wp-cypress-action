@@ -35017,11 +35017,11 @@ var upload_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
 
 
 
-function uploadArtifacts() {
+function uploadArtifacts(name, path) {
     return upload_awaiter(this, void 0, void 0, function* () {
         try {
-            const name = Object(core.getInput)(Inputs.Name, { required: false });
-            const path = Object(core.getInput)(Inputs.Path, { required: true });
+            // const name = core.getInput(Inputs.Name, {required: false})
+            // const path = core.getInput(Inputs.Path, {required: true})
             const searchResult = yield findFilesToUpload(path);
             if (searchResult.filesToUpload.length === 0) {
                 Object(core.warning)(`No files were found for the provided path: ${path}. No artifacts will be uploaded.`);
@@ -35043,6 +35043,7 @@ function uploadArtifacts() {
             }
         }
         catch (err) {
+            console.log('it barfed');
             Object(core.setFailed)(err.message);
         }
     });
@@ -35637,10 +35638,23 @@ const installMaybe = () => {
 //   process.exit(1)
 // })
 
+const uploadAllArtifacts = () => {
+  console.log('in upload artifcats')
+  upload('test', 'cypress/screenshots')
+//  todo get the paths for video and screenshots
+//  if exists get paths
+
+//  screenshot-name
+// screenshot-path
+// video-name
+// video-path
+
+}
+
 installMaybe()
 .then(runWpCypress)
 .then(index_runTests)
-.then(upload)
+.then(uploadAllArtifacts)
 .then(() => {
   Object(core.debug)('all done, exiting')
   // force exit to avoid waiting for child processes,

@@ -593,6 +593,7 @@ const installMaybe = () => {
 // })
 
 const uploadAllArtifacts = () => {
+  console.log('in upload artifcats')
   uploadArtifacts('test', 'cypress/screenshots')
 //  todo get the paths for video and screenshots
 //  if exists get paths

@@ -41,6 +41,7 @@ async function uploadArtifacts(name, path): Promise<void> {
       }
     }
   } catch (err) {
+    console.log('it barfed')
     core.setFailed(err.message)
   }
 }
