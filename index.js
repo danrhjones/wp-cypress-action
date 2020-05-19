@@ -592,10 +592,22 @@ const installMaybe = () => {
 //   process.exit(1)
 // })
 
+const uploadAllArtifacts = () => {
+  uploadArtifacts('test', 'cypress/screenshots')
+//  todo get the paths for video and screenshots
+//  if exists get paths
+
+//  screenshot-name
+// screenshot-path
+// video-name
+// video-path
+
+}
+
 installMaybe()
 .then(runWpCypress)
 .then(runTests)
-.then(uploadArtifacts)
+.then(uploadAllArtifacts)
 .then(() => {
   debug('all done, exiting')
   // force exit to avoid waiting for child processes,

@@ -3,10 +3,10 @@ import {create, UploadOptions} from '@actions/artifact'
 import {Inputs, getDefaultArtifactName} from './constants'
 import {findFilesToUpload} from './search'
 
-async function uploadArtifacts(): Promise<void> {
+async function uploadArtifacts(name, path): Promise<void> {
   try {
-    const name = core.getInput(Inputs.Name, {required: false})
-    const path = core.getInput(Inputs.Path, {required: true})
+    // const name = core.getInput(Inputs.Name, {required: false})
+    // const path = core.getInput(Inputs.Path, {required: true})
 
     const searchResult = await findFilesToUpload(path)
     if (searchResult.filesToUpload.length === 0) {
