@@ -40143,16 +40143,6 @@ const path = __webpack_require__(622)
 const fs = __webpack_require__(747)
 
 
-const runWpCypress = () => {
-  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('Create WP-Cypress docker container')
-  return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
-    return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
-        `"${yarnPath}" run wp-cypress start`,
-        []
-    )
-  })
-}
-
 /**
  * A small utility for checking when an URL responds, kind of
  * a poor man's https://www.npmjs.com/package/wait-on
@@ -40620,6 +40610,24 @@ const installMaybe = () => {
     })
   })
 }
+
+const runWpCypress = () => {
+  Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('Create WP-Cypress docker container')
+  if (useYarn()) {
+    return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('yarn', true).then(yarnPath => {
+      return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(
+          `"${yarnPath}" run wp-cypress start`,
+          []
+      )
+    })
+  } else {
+    return Object(_actions_io__WEBPACK_IMPORTED_MODULE_1__.which)('npm', true).then(npmPath => {
+      Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)(`npm at "${npmPath}"`)
+      return Object(_actions_exec__WEBPACK_IMPORTED_MODULE_0__.exec)(`${npmPath}" run wp-cypress start`, [])
+    })
+  }
+}
+
 
 installMaybe()
 .then(runWpCypress)
