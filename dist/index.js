@@ -40624,7 +40624,6 @@ const installMaybe = () => {
 installMaybe()
 .then(runWpCypress)
 .then(runTests)
-.then(uploadAllArtifacts)
 .then(() => {
   Object(_actions_core__WEBPACK_IMPORTED_MODULE_2__.debug)('all done, exiting')
   // force exit to avoid waiting for child processes,

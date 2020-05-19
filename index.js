@@ -501,7 +501,6 @@ const installMaybe = () => {
 installMaybe()
 .then(runWpCypress)
 .then(runTests)
-.then(uploadAllArtifacts)
 .then(() => {
   debug('all done, exiting')
   // force exit to avoid waiting for child processes,
