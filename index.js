@@ -13,6 +13,7 @@ import * as os from "os";
 import { restoreCache, saveCache } from 'cache/lib';
 import {Octokit} from "@octokit/rest";
 import hasha from "hasha";
+import uploadArtifacts from "./upload";
 const {Inputs} = require("cache/lib/constants");
 const findYarnWorkspaceRoot = require('find-yarn-workspace-root')
 const got = require('got')
@@ -594,6 +595,7 @@ const installMaybe = () => {
 installMaybe()
 .then(runWpCypress)
 .then(runTests)
+.then(uploadArtifacts)
 .then(() => {
   debug('all done, exiting')
   // force exit to avoid waiting for child processes,
