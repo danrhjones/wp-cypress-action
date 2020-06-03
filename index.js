@@ -242,17 +242,17 @@ const runTests = async () => {
   exportVariable('CYPRESS_CACHE_FOLDER', CYPRESS_CACHE_FOLDER)
   exportVariable('TERM', 'xterm')
 
-  const customCommand = getInput('command')
-  if (customCommand) {
-    console.log('Using custom test command: %s', customCommand)
-    return execCommand(customCommand, true, 'run tests')
-  }
+  // const customCommand = getInput('command')
+  // if (customCommand) {
+  //   console.log('Using custom test command: %s', customCommand)
+  //   return execCommand(customCommand, true, 'run tests')
+  // }
 
   debug('Running Cypress tests')
   const quoteArgument = isWindows() ? quote : I
 
-  const commandPrefix = getInput('command-prefix')
-  const record = getInputBool('record')
+  // const commandPrefix = getInput('command-prefix')
+  // const record = getInputBool('record')
   const parallel = getInputBool('parallel')
   const headless = getInputBool('headless')
 
@@ -260,30 +260,30 @@ const runTests = async () => {
   // split potentially long
 
   let cmd = []
-  if (commandPrefix) {
-    // we need to split the command prefix into individual arguments
-    // otherwise they are passed all as a single string
-    const parts = commandPrefix.split(' ')
-    cmd = cmd.concat(parts)
-    debug(`with concatenated command prefix: ${cmd.join(' ')}`)
-  }
+  // if (commandPrefix) {
+  //   // we need to split the command prefix into individual arguments
+  //   // otherwise they are passed all as a single string
+  //   const parts = commandPrefix.split(' ')
+  //   cmd = cmd.concat(parts)
+  //   debug(`with concatenated command prefix: ${cmd.join(' ')}`)
+  // }
   // push each CLI argument separately
   cmd.push('cypress')
   cmd.push('run')
   if (headless) {
     cmd.push('--headless')
   }
-  if (record) {
-    cmd.push('--record')
-  }
+  // if (record) {
+  //   cmd.push('--record')
+  // }
   if (parallel) {
     cmd.push('--parallel')
   }
-  const group = getInput('group')
-  if (group) {
-    cmd.push('--group')
-    cmd.push(quoteArgument(group))
-  }
+  // const group = getInput('group')
+  // if (group) {
+  //   cmd.push('--group')
+  //   cmd.push(quoteArgument(group))
+  // }
   const tag = getInput('tag')
   if (tag) {
     cmd.push('--tag')
@@ -359,22 +359,17 @@ const runTests = async () => {
   const browser = getInput('browser')
   if (browser) {
     cmd.push('--browser')
-    // TODO should browser be quoted?
-    // If it is a path, it might have spaces
     cmd.push(browser)
   }
 
   const envInput = getInput('env')
   if (envInput) {
-    // TODO should env be quoted?
-    // If it is a JSON, it might have spaces
     cmd.push('--env')
     cmd.push(envInput)
   }
 
   console.log('Cypress test command: npx %s', cmd.join(' '))
 
-  // since we have quoted arguments ourselves, do not double quote them
   const opts = {
     ...cypressCommandOptions,
     windowsVerbatimArguments: false

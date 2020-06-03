@@ -1,5 +1,5 @@
-name: 'Hello World'
-description: 'GitHub Action for running Cypress end-to-end tests'
+name: 'WP-Cypress'
+description: 'GitHub Action for running Cypress end-to-end tests using the WP-Cypress plugin'
 author: 'Dan Jones'
 inputs:
   record:
