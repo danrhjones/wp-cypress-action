@@ -227,8 +227,6 @@ const getInputBool = (name, defaultValue = false) => {
   return defaultValue
 }
 
-
-
 const I = x => x
 
 const runTests = async () => {
@@ -242,48 +240,22 @@ const runTests = async () => {
   exportVariable('CYPRESS_CACHE_FOLDER', CYPRESS_CACHE_FOLDER)
   exportVariable('TERM', 'xterm')
 
-  // const customCommand = getInput('command')
-  // if (customCommand) {
-  //   console.log('Using custom test command: %s', customCommand)
-  //   return execCommand(customCommand, true, 'run tests')
-  // }
-
   debug('Running Cypress tests')
   const quoteArgument = isWindows() ? quote : I
 
-  // const commandPrefix = getInput('command-prefix')
-  // const record = getInputBool('record')
   const parallel = getInputBool('parallel')
   const headless = getInputBool('headless')
 
-  // TODO using yarn to run cypress when yarn is used for install
-  // split potentially long
-
   let cmd = []
-  // if (commandPrefix) {
-  //   // we need to split the command prefix into individual arguments
-  //   // otherwise they are passed all as a single string
-  //   const parts = commandPrefix.split(' ')
-  //   cmd = cmd.concat(parts)
-  //   debug(`with concatenated command prefix: ${cmd.join(' ')}`)
-  // }
-  // push each CLI argument separately
+
   cmd.push('cypress')
   cmd.push('run')
   if (headless) {
     cmd.push('--headless')
   }
-  // if (record) {
-  //   cmd.push('--record')
-  // }
   if (parallel) {
     cmd.push('--parallel')
   }
-  // const group = getInput('group')
-  // if (group) {
-  //   cmd.push('--group')
-  //   cmd.push(quoteArgument(group))
-  // }
   const tag = getInput('tag')
   if (tag) {
     cmd.push('--tag')
@@ -304,7 +276,7 @@ const runTests = async () => {
     cmd.push('--config-file')
     cmd.push(quoteArgument(configFileInput))
   }
-  if (parallel || group) {
+  if (parallel) {
     const {
       GITHUB_WORKFLOW,
       GITHUB_SHA,
